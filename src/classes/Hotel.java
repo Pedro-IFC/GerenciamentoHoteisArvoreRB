@@ -4,6 +4,15 @@ public class Hotel {
 	private String name;
 	private Reservas reservas;
 	private Cancelamentos cancelamentos;
+	private Quarto[] quartos;
+	
+	
+	public Quarto[] getQuartos() {
+		return quartos;
+	}
+	public void setQuartos(Quarto[] quartos) {
+		this.quartos = quartos;
+	}
 	public String getName() {
 		return name;
 	}
