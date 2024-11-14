@@ -1,35 +1,32 @@
 package classes;
+import java.util.ArrayList;
 
-public class Hotel {
+
+public class Hotel extends Ficheiro{
 	private String name;
-	private Reservas reservas;
-	private Cancelamentos cancelamentos;
-	private Quarto[] quartos;
-	
-	
-	public Quarto[] getQuartos() {
-		return quartos;
+	private Clientes clientes;
+    private ArrayList<Quarto> quartos = new ArrayList<>();
+	public Hotel(String name) {
+		super();
+		this.name = name;
 	}
-	public void setQuartos(Quarto[] quartos) {
-		this.quartos = quartos;
+	
+	public ArrayList<Quarto> getQuartos() {
+		return quartos;
 	}
 	public String getName() {
 		return name;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public Clientes getClientes() {
+		return clientes;
 	}
-	public Reservas getReservas() {
-		return reservas;
+	public boolean addCliente(Cliente cliente) {
+		return this.clientes.inserir(cliente, cliente.getCPF());
 	}
-	public void setReservas(Reservas reservas) {
-		this.reservas = reservas;
+	public void addQuarto(Quarto quarto) {
+		this.quartos.add(quarto);
 	}
-	public Cancelamentos getCancelamentos() {
-		return cancelamentos;
+	public Quarto getQuarto(int id) {
+		return this.quartos.get(id);
 	}
-	public void setCancelamentos(Cancelamentos cancelamentos) {
-		this.cancelamentos = cancelamentos;
-	}
-	
 }

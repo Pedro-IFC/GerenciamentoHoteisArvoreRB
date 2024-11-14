@@ -47,26 +47,42 @@ public class ArvoreRubroNegro<T> {
         nodo.setPai(esquerdo);
     }
 
-    public void inserir(T dado, int chave) {
+    public boolean inserir(T dado, int chave) {
         Nodo<T> novoNodo = new Nodo<>(dado, chave);
-        raiz = inserirRecursivo(raiz, novoNodo);
-        balancearInsercao(novoNodo);
+        boolean inserido = inserirRecursivo(raiz, novoNodo);
+        if (inserido) {
+            balancearInsercao(novoNodo);
+        }
+        return inserido;
     }
 
-    private Nodo<T> inserirRecursivo(Nodo<T> raiz, Nodo<T> nodo) {
+    private boolean inserirRecursivo(Nodo<T> raiz, Nodo<T> nodo) {
         if (raiz == null) {
-            return nodo;
+            this.raiz = nodo; // Se a raiz está vazia, definimos o novo nodo como raiz
+            return true;
         }
-        
-        if (nodo.getChave()<raiz.getChave()) {
-            raiz.setEsquerdo(inserirRecursivo(raiz.getEsquerdo(), nodo));
-            raiz.getEsquerdo().setPai(raiz);
-        } else if (nodo.getChave()>raiz.getChave()) {
-            raiz.setDireito(inserirRecursivo(raiz.getDireito(), nodo));
-            raiz.getDireito().setPai(raiz);
+
+        if (nodo.getChave() < raiz.getChave()) {
+            if (raiz.getEsquerdo() == null) {
+                raiz.setEsquerdo(nodo);
+                nodo.setPai(raiz);
+                return true;
+            } else {
+                return inserirRecursivo(raiz.getEsquerdo(), nodo);
+            }
+        } else if (nodo.getChave() > raiz.getChave()) {
+            if (raiz.getDireito() == null) {
+                raiz.setDireito(nodo);
+                nodo.setPai(raiz);
+                return true;
+            } else {
+                return inserirRecursivo(raiz.getDireito(), nodo);
+            }
+        } else {
+            return false;
         }
-        return raiz;
     }
+
     private void balancearInsercao(Nodo<T> nodo) {
         Nodo<T> pai, avo;
         
@@ -119,5 +135,143 @@ public class ArvoreRubroNegro<T> {
             }
         }
         raiz.setCor(Cor.PRETO);
+    }
+    
+    public int size() {
+        return contarNodos(raiz);
+    }
+
+    private int contarNodos(Nodo<T> nodo) {
+        if (nodo == null) {
+            return 0;
+        }
+        int esquerdo = contarNodos(nodo.getEsquerdo());
+        int direito = contarNodos(nodo.getDireito());
+        return 1 + esquerdo + direito;
+    }
+    public boolean excluir(int chave) {
+        Nodo<T> nodo = buscarNodo(raiz, chave); // Localiza o nodo a ser excluído
+        if (nodo == null) {
+            return false; // Elemento não encontrado
+        }
+        
+        Nodo<T> substituto, fixNode;
+        Cor corOriginal = nodo.getCor();
+        
+        // Caso o nodo tenha apenas um filho ou nenhum
+        if (nodo.getEsquerdo() == null) {
+            fixNode = nodo.getDireito();
+            substituirNodo(nodo, nodo.getDireito());
+        } else if (nodo.getDireito() == null) {
+            fixNode = nodo.getEsquerdo();
+            substituirNodo(nodo, nodo.getEsquerdo());
+        } else {
+            // Se o nodo tem dois filhos, encontra o sucessor
+            substituto = menorNodo(nodo.getDireito());
+            corOriginal = substituto.getCor();
+            fixNode = substituto.getDireito();
+            
+            if (substituto.getPai() == nodo) {
+                if (fixNode != null) fixNode.setPai(substituto);
+            } else {
+                substituirNodo(substituto, substituto.getDireito());
+                substituto.setDireito(nodo.getDireito());
+                substituto.getDireito().setPai(substituto);
+            }
+            
+            substituirNodo(nodo, substituto);
+            substituto.setEsquerdo(nodo.getEsquerdo());
+            substituto.getEsquerdo().setPai(substituto);
+            substituto.setCor(nodo.getCor());
+        }
+        
+        if (corOriginal == Cor.PRETO) {
+            balancearExclusao(fixNode);
+        }
+        
+        return true;
+    }
+
+    private Nodo<T> buscarNodo(Nodo<T> raiz, int chave) {
+        if (raiz == null || raiz.getChave() == chave) return raiz;
+        if (chave < raiz.getChave()) return buscarNodo(raiz.getEsquerdo(), chave);
+        return buscarNodo(raiz.getDireito(), chave);
+    }
+
+    private void substituirNodo(Nodo<T> antigo, Nodo<T> novoNodo) {
+        if (antigo.getPai() == null) {
+            raiz = novoNodo;
+        } else if (antigo == antigo.getPai().getEsquerdo()) {
+            antigo.getPai().setEsquerdo(novoNodo);
+        } else {
+            antigo.getPai().setDireito(novoNodo);
+        }
+        if (novoNodo != null) {
+            novoNodo.setPai(antigo.getPai());
+        }
+    }
+
+    private Nodo<T> menorNodo(Nodo<T> nodo) {
+        while (nodo.getEsquerdo() != null) {
+            nodo = nodo.getEsquerdo();
+        }
+        return nodo;
+    }
+
+    private void balancearExclusao(Nodo<T> nodo) {
+        while (nodo != raiz && (nodo == null || nodo.getCor() == Cor.PRETO)) {
+            if (nodo == nodo.getPai().getEsquerdo()) {
+                Nodo<T> irmao = nodo.getPai().getDireito();
+                if (irmao.getCor() == Cor.VERMELHO) {
+                    irmao.setCor(Cor.PRETO);
+                    nodo.getPai().setCor(Cor.VERMELHO);
+                    rotacaoEsquerda(nodo.getPai());
+                    irmao = nodo.getPai().getDireito();
+                }
+                if ((irmao.getEsquerdo() == null || irmao.getEsquerdo().getCor() == Cor.PRETO) &&
+                    (irmao.getDireito() == null || irmao.getDireito().getCor() == Cor.PRETO)) {
+                    irmao.setCor(Cor.VERMELHO);
+                    nodo = nodo.getPai();
+                } else {
+                    if (irmao.getDireito() == null || irmao.getDireito().getCor() == Cor.PRETO) {
+                        if (irmao.getEsquerdo() != null) irmao.getEsquerdo().setCor(Cor.PRETO);
+                        irmao.setCor(Cor.VERMELHO);
+                        rotacaoDireita(irmao);
+                        irmao = nodo.getPai().getDireito();
+                    }
+                    irmao.setCor(nodo.getPai().getCor());
+                    nodo.getPai().setCor(Cor.PRETO);
+                    if (irmao.getDireito() != null) irmao.getDireito().setCor(Cor.PRETO);
+                    rotacaoEsquerda(nodo.getPai());
+                    nodo = raiz;
+                }
+            } else {
+                Nodo<T> irmao = nodo.getPai().getEsquerdo();
+                if (irmao.getCor() == Cor.VERMELHO) {
+                    irmao.setCor(Cor.PRETO);
+                    nodo.getPai().setCor(Cor.VERMELHO);
+                    rotacaoDireita(nodo.getPai());
+                    irmao = nodo.getPai().getEsquerdo();
+                }
+                if ((irmao.getDireito() == null || irmao.getDireito().getCor() == Cor.PRETO) &&
+                    (irmao.getEsquerdo() == null || irmao.getEsquerdo().getCor() == Cor.PRETO)) {
+                    irmao.setCor(Cor.VERMELHO);
+                    nodo = nodo.getPai();
+                } else {
+                    if (irmao.getEsquerdo() == null || irmao.getEsquerdo().getCor() == Cor.PRETO) {
+                        if (irmao.getDireito() != null) irmao.getDireito().setCor(Cor.PRETO);
+                        irmao.setCor(Cor.VERMELHO);
+                        rotacaoEsquerda(irmao);
+                        irmao = nodo.getPai().getEsquerdo();
+                    }
+                    irmao.setCor(nodo.getPai().getCor());
+                    nodo.getPai().setCor(Cor.PRETO);
+                    if (irmao.getEsquerdo() != null) irmao.getEsquerdo().setCor(Cor.PRETO);
+                    rotacaoDireita(nodo.getPai());
+                    nodo = raiz;
+                }
+            }
+        }
+        if (nodo != null) nodo.setCor(Cor.PRETO);
     }
 }
