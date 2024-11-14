@@ -35,7 +35,19 @@ public class HotelFacade {
 				}
 			}
 		}
-		
+		return false;
+	}
+	public boolean removerReserva(int idHotel, int idQuarto, int CPF, Date dataCheckin) {
+		Cliente cliente = this.getHotel(idHotel).getClientes().get(CPF);
+		int idReserva =  Integer.parseInt(
+			"" + idQuarto 
+				+ Reserva.transformarEmIdNumerico(dataCheckin)
+			);
+		if(cliente.getReservas().excluir(idReserva)) {
+			if(this.getHotel(idHotel).getReservas().excluir(idReserva)){
+				return true;
+			}
+		}
 		return false;
 	}
 }

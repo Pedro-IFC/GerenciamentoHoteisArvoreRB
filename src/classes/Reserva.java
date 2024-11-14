@@ -21,7 +21,7 @@ public class Reserva {
 	public Date getCheckout() {
 		return checkout;
 	}
-    public int transformarEmIdNumerico() {
+    public static int transformarEmIdNumerico(Date checkin) {
         SimpleDateFormat formatoId = new SimpleDateFormat("yyyyMMdd");
         return Integer.parseInt(formatoId.format(checkin));
     }

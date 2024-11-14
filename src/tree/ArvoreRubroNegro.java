@@ -197,7 +197,10 @@ public class ArvoreRubroNegro<T> {
         if (chave < raiz.getChave()) return buscarNodo(raiz.getEsquerdo(), chave);
         return buscarNodo(raiz.getDireito(), chave);
     }
-
+    public T get(int chave) {
+        Nodo<T> nodo = buscarNodo(raiz, chave);
+        return (nodo != null) ? nodo.getDado() : null;
+    }
     private void substituirNodo(Nodo<T> antigo, Nodo<T> novoNodo) {
         if (antigo.getPai() == null) {
             raiz = novoNodo;
