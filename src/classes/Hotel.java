@@ -3,14 +3,9 @@ import java.util.ArrayList;
 
 
 public class Hotel extends Ficheiro{
-	private String name;
+	private String name = "Overlook";
 	private Clientes clientes;
     private ArrayList<Quarto> quartos = new ArrayList<>();
-	public Hotel(String name) {
-		super();
-		this.name = name;
-	}
-	
 	public ArrayList<Quarto> getQuartos() {
 		return quartos;
 	}

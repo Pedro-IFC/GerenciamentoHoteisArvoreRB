@@ -7,8 +7,8 @@ public class Ficheiro {
 	public boolean addReserva(Reserva reserva) {
 		return this.reservas.inserir(reserva,
 				Integer.parseInt(
-					"" + reserva.getQuarto().getNumero() 
-					+ reserva.transformarEmIdNumerico()
+					"" + Reserva.transformarEmIdNumerico(reserva.getCheckin())
+						+ reserva.getQuarto().getNumero() 
 					)
 				);
 	}
@@ -20,8 +20,8 @@ public class Ficheiro {
 	public boolean addCancelamento(Cancelamento cancelamento) {
 		return this.cancelamentos.inserir(cancelamento,
 				Integer.parseInt(
-					"" + cancelamento.getQuarto().getNumero() 
-					+ cancelamento.transformarEmIdNumerico()
+					"" + Cancelamento.transformarEmIdNumerico(cancelamento.getCheckin())
+						+ cancelamento.getQuarto().getNumero() 
 					)
 				);
 	}

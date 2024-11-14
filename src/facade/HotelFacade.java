@@ -9,27 +9,31 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class HotelFacade {
-    private ArrayList<Hotel> hoteis = new ArrayList<>();
-	public int inserirHotel(String name) {
-		this.hoteis.add(new Hotel(name));
-		return this.hoteis.size()-1;
+    private Hotel hotel = new Hotel();
+	public int inserirQuarto(int numero, CategoriaDoQuarto categoria) {
+		this.hotel.addQuarto(new Quarto(numero, categoria));
+		return this.hotel.getQuartos().size() - 1;
 	}
-	public ArrayList<Hotel> getHoteis() {
-		return hoteis;
+	public String getName() {
+		return this.hotel.getName();
 	}
-	public Hotel getHotel(int idHotel) {
-		return hoteis.get(idHotel);
+	public ArrayList<Quarto> getQuartos(){
+		return this.hotel.getQuartos();
 	}
-	public int inserirQuarto(int idHotel, int numero, CategoriaDoQuarto categoria) {
-		this.hoteis.get(idHotel).addQuarto(new Quarto(numero, categoria));
-		return this.hoteis.get(idHotel).getQuartos().size() - 1;
+	public boolean hasQuarto(int num) {
+		for(int i = 0; i<this.hotel.getQuartos().size(); i++) {
+			if(this.hotel.getQuarto(i).getNumero()==num) {
+				return true;
+			}
+		}
+		return false;
 	}
-	public boolean inserirReserva(int idHotel, int idQuarto, int CPF, String nome, Date dataCheckin) {
+	public boolean inserirReserva(int idQuarto, int CPF, String nome, Date dataCheckin) {
 		Cliente cliente = new Cliente(CPF, nome);
 		
-		if(this.getHotel(idHotel).addCliente(cliente)) {
-			Reserva reserva = new Reserva(this.getHotel(idHotel).getQuarto(idQuarto), dataCheckin);
-			if(this.getHotel(idHotel).addReserva(reserva)){
+		if(this.hotel.addCliente(cliente)) {
+			Reserva reserva = new Reserva(this.hotel.getQuarto(idQuarto), dataCheckin);
+			if(this.hotel.addReserva(reserva)){
 				if(cliente.addReserva(reserva)) {
 					return true;
 				}
@@ -37,14 +41,14 @@ public class HotelFacade {
 		}
 		return false;
 	}
-	public boolean removerReserva(int idHotel, int idQuarto, int CPF, Date dataCheckin) {
-		Cliente cliente = this.getHotel(idHotel).getClientes().get(CPF);
+	public boolean removerReserva(int idQuarto, int CPF, Date dataCheckin) {
+		Cliente cliente = this.hotel.getClientes().get(CPF);
 		int idReserva =  Integer.parseInt(
 			"" + idQuarto 
 				+ Reserva.transformarEmIdNumerico(dataCheckin)
 			);
 		if(cliente.getReservas().excluir(idReserva)) {
-			if(this.getHotel(idHotel).getReservas().excluir(idReserva)){
+			if(this.hotel.getReservas().excluir(idReserva)){
 				return true;
 			}
 		}
