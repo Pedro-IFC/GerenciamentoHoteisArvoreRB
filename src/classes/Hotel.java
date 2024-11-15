@@ -1,5 +1,6 @@
 package classes;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class Hotel extends Ficheiro{
@@ -23,5 +24,8 @@ public class Hotel extends Ficheiro{
 	}
 	public Quarto getQuarto(int id) {
 		return this.quartos.get(id);
+	}
+	public List<Reserva> getReservasByQuarto(int idQuarto) {
+		return this.getReservas().getReservasByQuarto(idQuarto);
 	}
 }

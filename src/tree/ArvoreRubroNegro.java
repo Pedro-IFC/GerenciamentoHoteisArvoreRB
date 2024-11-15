@@ -136,11 +136,9 @@ public class ArvoreRubroNegro<T> {
         }
         raiz.setCor(Cor.PRETO);
     }
-    
     public int size() {
         return contarNodos(raiz);
     }
-
     private int contarNodos(Nodo<T> nodo) {
         if (nodo == null) {
             return 0;
@@ -191,7 +189,6 @@ public class ArvoreRubroNegro<T> {
         
         return true;
     }
-
     private Nodo<T> buscarNodo(Nodo<T> raiz, int chave) {
         if (raiz == null || raiz.getChave() == chave) return raiz;
         if (chave < raiz.getChave()) return buscarNodo(raiz.getEsquerdo(), chave);
@@ -220,7 +217,6 @@ public class ArvoreRubroNegro<T> {
         }
         return nodo;
     }
-
     private void balancearExclusao(Nodo<T> nodo) {
         while (nodo != raiz && (nodo == null || nodo.getCor() == Cor.PRETO)) {
             if (nodo == nodo.getPai().getEsquerdo()) {
@@ -276,5 +272,8 @@ public class ArvoreRubroNegro<T> {
             }
         }
         if (nodo != null) nodo.setCor(Cor.PRETO);
+    }
+    public Nodo<T> getRaiz(){
+    	return this.raiz;
     }
 }

@@ -30,6 +30,9 @@ public class Interface {
 				case(7):
 					comando = Comander.consultarQuartos();
 				break;
+				case(8):
+					comando = Comander.consultarDisponibilidadeQuartos();
+				break;
 				default:
 					System.out.println("Erro comando não esperado, tente novamente!");
 					comando=0;

@@ -5,7 +5,6 @@ public class Nodo<T> {
     private Cor cor;
     private  Nodo<T> esquerdo, direito, pai;
     private int chave;
-    
     public Nodo(T dado, int chave) {
         this.dado = dado;
         this.chave=chave;

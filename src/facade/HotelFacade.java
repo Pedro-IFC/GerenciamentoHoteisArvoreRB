@@ -7,6 +7,7 @@ import classes.Reserva;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class HotelFacade {
     private Hotel hotel = new Hotel();
@@ -33,8 +34,8 @@ public class HotelFacade {
 		
 		if(this.hotel.addCliente(cliente)) {
 			Reserva reserva = new Reserva(this.hotel.getQuarto(idQuarto), dataCheckin);
-			if(this.hotel.addReserva(reserva)){
-				if(cliente.addReserva(reserva)) {
+			if(this.hotel.addReserva(reserva, cliente.getCPF())){
+				if(cliente.addReserva(reserva, cliente.getCPF())) {
 					return true;
 				}
 			}
@@ -53,5 +54,20 @@ public class HotelFacade {
 			}
 		}
 		return false;
+	}
+	public void removeQuarto(int idQuarto) {
+		this.hotel.getQuartos().remove(idQuarto);
+	}
+	public List<Integer> disponibilidadeQuarto(int idCat, Date periodo) {
+		List<Integer> ids = new ArrayList<Integer>();
+		for(int i = 0; i<this.hotel.getQuartos().size(); i++) {
+			if(this.hotel.getQuartos().get(i).getCategoria() == CategoriaDoQuarto.values()[idCat]) {
+				List<Reserva> reservas = this.hotel.getReservasByQuarto(this.hotel.getQuartos().get(i).getNumero());
+				if(reservas.size()<=0) {
+					ids.add(i);
+				}
+			}
+		}
+		return ids;
 	}
 }
