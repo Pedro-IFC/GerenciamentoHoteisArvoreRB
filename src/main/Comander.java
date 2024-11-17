@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 import classes.CategoriaDoQuarto;
+import classes.Cliente;
 import facade.HotelFacade;
 
 public class Comander {
@@ -151,4 +152,77 @@ public class Comander {
         }
 		return 1;
 	}
+	public static int gerirReservas() {
+		System.out.println(
+				"Você selecionou gerir Reservas!\n"
+				+ "Você gostaria de:\n"
+				+ "[1] Cadastrar reserva \n"
+				+ "[2] Listagem de Reservas por Check-in \n"
+				+ "[3] Listagem de Reservas por Cliente:\n"
+				+ "[4] Cancelar uma reserva:\n"
+				+ "..."
+			);
+		return scanner.nextInt()+8;
+	}
+	public static int cadastrarReserva() {
+		int cpf =0;
+		do {
+			if(cpf<0) {
+				System.out.println("Não foi possível identificar esse CPF, tente novamente!");
+			}
+			System.out.println(
+				"Qual o CPF do cliente?: "
+			);
+			cpf = scanner.nextInt();
+		}while(cpf<0);
+		if(!hotelF.hasCliente(cpf)) {
+			System.out.println("Não foi possível identificar um cliente com este CPF, criado um novo registro de cliente!");
+	        System.out.print("Digite um nome: ");
+	        scanner.nextLine();
+	        String nome = scanner.nextLine(); 
+			hotelF.inserirCliente(cpf, nome);
+		}
+		Cliente c = hotelF.getCliente(cpf);
+
+		System.out.println(
+			"ID | Nº | Categoria"
+		);	
+		if(hotelF.getQuartos().size()==0) {
+			System.out.println("O Hotel " + hotelF.getName() + "está vazio! ");
+		}else {
+			int i;
+			for(i = 0; i<hotelF.getQuartos().size(); i++) {
+				System.out.println("" 
+					+ "[" + i + "] | "
+					+ (hotelF.getQuartos().get(i).getNumero()<10? "0" : "") + hotelF.getQuartos().get(i).getNumero() 
+					+ hotelF.getQuartos().get(i).getCategoria());
+			}
+			int idQuarto=0;
+			do {
+				if(idQuarto<0 || idQuarto>i) {
+					System.out.println("Não foi possível identificar esse quarto, tente novamente!");
+				}
+				System.out.println(
+					"Qual o ID do quarto?: "
+				);
+				idQuarto = scanner.nextInt();
+			}while(idQuarto<0 || idQuarto>i);
+		}
+		SimpleDateFormat formatoData = new SimpleDateFormat("dd/MM/yyyy");
+        System.out.print("Digite a data de check-in (dd/MM/yyyy): ");
+        scanner.nextLine();
+        String dataEntrada = scanner.nextLine(); 
+        try {
+        	Date dataFormatada1 = formatoData.parse(dataEntrada);
+            System.out.print("Digite a data de check-out (dd/MM/yyyy): ");
+            scanner.nextLine();
+            String dataEntrada2 = scanner.nextLine(); 
+    		//criacao
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 2;
+	}
+	
 }

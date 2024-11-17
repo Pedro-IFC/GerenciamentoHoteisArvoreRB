@@ -189,6 +189,9 @@ public class ArvoreRubroNegro<T> {
         
         return true;
     }
+    public boolean has(int chave) {
+    	return this.buscarNodo(this.raiz, chave)!=null;
+    }
     private Nodo<T> buscarNodo(Nodo<T> raiz, int chave) {
         if (raiz == null || raiz.getChave() == chave) return raiz;
         if (chave < raiz.getChave()) return buscarNodo(raiz.getEsquerdo(), chave);

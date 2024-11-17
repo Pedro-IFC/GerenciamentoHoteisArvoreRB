@@ -7,6 +7,7 @@ public class Reserva {
 	private Quarto quarto;
 	private Date checkin;
 	private Date checkout;
+	private Cliente cliente;
     public boolean isDateBetween(Date periodo, boolean entre) {
     	if(entre) {
             return (periodo.after(checkin) || periodo.equals(checkin)) 
@@ -15,11 +16,15 @@ public class Reserva {
         return !((periodo.after(checkin) || periodo.equals(checkin)) 
                 && (periodo.before(checkout) || periodo.equals(checkout)));
     }
-	public Reserva(Quarto quarto, Date checkin) {
+    
+	public Reserva(Quarto quarto, Date checkin, Date checkout, Cliente cliente) {
 		super();
 		this.quarto = quarto;
 		this.checkin = checkin;
+		this.checkout = checkout;
+		this.cliente = cliente;
 	}
+
 	public Quarto getQuarto() {
 		return quarto;
 	}
@@ -29,10 +34,12 @@ public class Reserva {
 	public Date getCheckout() {
 		return checkout;
 	}
-    public static int transformarEmIdNumerico(Date checkin) {
-        SimpleDateFormat formatoId = new SimpleDateFormat("yyyyMMdd");
-        return Integer.parseInt(formatoId.format(checkin));
-    }
+	public Cliente getCliente() {
+		return cliente;
+	}
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Reserva [quarto=");

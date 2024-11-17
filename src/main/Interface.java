@@ -13,7 +13,7 @@ public class Interface {
 					comando = Comander.gerirQuartos();
 				break;
 				case(2):
-					//gerirReservas
+					comando = Comander.gerirReservas();
 				break;
 				case(3):
 					//gerirCancelamentos
@@ -32,6 +32,18 @@ public class Interface {
 				break;
 				case(8):
 					comando = Comander.consultarDisponibilidadeQuartos();
+				break;
+				case(9):
+					comando = Comander.cadastrarReserva();
+				break;
+				case(10):
+					//Ler reserva por checkin
+				break;
+				case(11):
+					//Ler reserva por cliente
+				break;
+				case(12):
+					//Cancelar reserva
 				break;
 				default:
 					System.out.println("Erro comando não esperado, tente novamente!");

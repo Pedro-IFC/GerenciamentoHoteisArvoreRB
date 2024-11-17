@@ -29,32 +29,6 @@ public class HotelFacade {
 		}
 		return false;
 	}
-	public boolean inserirReserva(int idQuarto, int CPF, String nome, Date dataCheckin) {
-		Cliente cliente = new Cliente(CPF, nome);
-		
-		if(this.hotel.addCliente(cliente)) {
-			Reserva reserva = new Reserva(this.hotel.getQuarto(idQuarto), dataCheckin);
-			if(this.hotel.addReserva(reserva, cliente.getCPF())){
-				if(cliente.addReserva(reserva, cliente.getCPF())) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-	public boolean removerReserva(int idQuarto, int CPF, Date dataCheckin) {
-		Cliente cliente = this.hotel.getClientes().get(CPF);
-		int idReserva =  Integer.parseInt(
-			"" + idQuarto 
-				+ Reserva.transformarEmIdNumerico(dataCheckin)
-			);
-		if(cliente.getReservas().excluir(idReserva)) {
-			if(this.hotel.getReservas().excluir(idReserva)){
-				return true;
-			}
-		}
-		return false;
-	}
 	public void removeQuarto(int idQuarto) {
 		this.hotel.getQuartos().remove(idQuarto);
 	}
@@ -69,5 +43,17 @@ public class HotelFacade {
 			}
 		}
 		return ids;
+	}
+	public boolean inserirReserva(Cliente cliente, Quarto quarto, Date checkin, Date checkout) {
+		return this.hotel.addReserva(new Reserva(quarto, checkin, checkout, cliente), cliente.getCPF());
+	}
+	public boolean hasCliente(int cpf) {
+		return this.hotel.getClientes().has(cpf);
+	}
+	public void inserirCliente(int cpf, String nome) {
+		this.hotel.addCliente(new Cliente(cpf, nome));
+	}
+	public Cliente getCliente(int cpf) {
+		return this.hotel.getClientes().get(cpf);
 	}
 }
