@@ -2,7 +2,7 @@ package main;
 
 public class Main {
 	public static void main(String[] args) {
-		Interface.init();
+		CLI.init();
 	}
 
 }

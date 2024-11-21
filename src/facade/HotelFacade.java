@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class HotelFacade {
     private Hotel hotel = new Hotel();
@@ -87,7 +88,6 @@ public class HotelFacade {
         int quartosOcupados = 0;
         for (Quarto quarto : hotel.getQuartos()) {
             List<Reserva> reservas = hotel.getReservasByQuarto(quarto.getNumero());
-        	System.out.println(reservas.size());
             for (Reserva reserva : reservas) {
                 if (reserva.isDateBetween(initial, finalDate)) {
                     quartosOcupados++;
@@ -96,7 +96,6 @@ public class HotelFacade {
         }
         return (double) quartosOcupados / totalQuartos * 100;
 	}
-
 	public Double getTaxaCancelamento(Date initial, Date finalDate) {
         int totalQuartos = hotel.getQuartos().size();
         if (totalQuartos == 0) {
@@ -113,5 +112,11 @@ public class HotelFacade {
             }
         }
         return (double) quartosOcupados / totalQuartos * 100;
+	}
+	public Map<Integer, Integer> getQuartosMaisReservados() {
+		return hotel.getQuartosMaisReservados();
+	}
+	public Map<Integer, Integer> getQuartosMenosReservados() {
+		return hotel.getQuartosMenosReservados();
 	}
 }

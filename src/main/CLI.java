@@ -1,6 +1,6 @@
 package main;
 
-public class Interface {
+public class CLI {
 	public static void init() {
 		Comander.printOccupancyRate();
 		int comando = Comander.index();
@@ -60,15 +60,18 @@ public class Interface {
 					comando = Comander.verCancelamentosPorCliente();
 				break;
 				case(16):
-					comando = Comander.taxaOcupacaoPorPeriodo();
+					comando = Comander.verTodosCancelamentos();
 				break;
 				case(17):
-					comando = Comander.quartosMaisReservados();
+					comando = Comander.taxaOcupacaoPorPeriodo();
 				break;
 				case(18):
-					comando = Comander.quartosMenosReservados();
+					comando = Comander.quartosMaisReservados();
 				break;
 				case(19):
+					comando = Comander.quartosMenosReservados();
+				break;
+				case(20):
 					comando = Comander.taxaCancelamentoPorPeriodo();
 				break;
 				default:

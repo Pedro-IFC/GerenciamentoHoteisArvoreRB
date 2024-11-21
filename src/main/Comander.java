@@ -1,7 +1,9 @@
 package main;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Map;
 import java.util.Scanner;
 import classes.CategoriaDoQuarto;
 import classes.Cliente;
@@ -11,7 +13,11 @@ public class Comander {
 	private static HotelFacade hotelF = new HotelFacade();
 	private static Scanner scanner = new Scanner(System.in);
 	public static void printOccupancyRate() {
-		System.out.println("Taxa de ocupação: " + hotelF.getTaxaOCupacao(new Date(), new Date()) + "%");
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2024, Calendar.NOVEMBER, 21, 23, 59, 59);
+        calendar.set(Calendar.MILLISECOND, 999);
+        Date finalDate = calendar.getTime();
+		System.out.println("Taxa de ocupação: " + hotelF.getTaxaOCupacao(new Date(),finalDate) + "%");
 	}
 	public static int  index() {
 		System.out.println(
@@ -365,7 +371,7 @@ public class Comander {
 				+ "..."
 			);
 		int input = scanner.nextInt();
-		return input<=0? 0 : input+12;
+		return input<=0? 0 : input+13;
 	}
 	public static int verTodosCancelamentos() {
 		System.out.println(
@@ -453,7 +459,7 @@ public class Comander {
 				+ "..."
 			);
 		int input = scanner.nextInt();
-		return input<=0? 0 : input+15;
+		return input<=0? 0 : input+16;
 	}
 	public static int taxaOcupacaoPorPeriodo() {
 		System.out.println("Você escolheu ocupação por período");
@@ -473,9 +479,21 @@ public class Comander {
 		return 4;
 	}
 	public static int quartosMaisReservados() {
+		System.out.println("Quartos mais reservados: ");
+        for (Map.Entry<Integer, Integer> entry : hotelF.getQuartosMaisReservados().entrySet()) {
+            int numeroQuarto = entry.getKey();
+            int numeroReservas = entry.getValue();
+            System.out.println("[" + numeroQuarto + "] Reservas: " + numeroReservas);
+        }
 		return 4;
 	}
 	public static int quartosMenosReservados() {
+		System.out.println("Quartos menos reservados: ");
+        for (Map.Entry<Integer, Integer> entry : hotelF.getQuartosMenosReservados().entrySet()) {
+            int numeroQuarto = entry.getKey();
+            int numeroReservas = entry.getValue();
+            System.out.println("[" + numeroQuarto + "] Reservas: " + numeroReservas);
+        }
 		return 4;
 	}
 	public static int taxaCancelamentoPorPeriodo() {

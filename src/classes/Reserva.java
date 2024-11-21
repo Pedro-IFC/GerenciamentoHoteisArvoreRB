@@ -6,19 +6,16 @@ public class Reserva {
 	private Quarto quarto;
 	private Date checkin;
 	private Date checkout;
-    public boolean isDateBetween(Date periodo, boolean entre) {
-    	if(entre) {
-            return (periodo.after(checkin) || periodo.equals(checkin)) 
-                && (periodo.before(checkout) || periodo.equals(checkout));
-    	}
-        return !((periodo.after(checkin) || periodo.equals(checkin)) 
-                && (periodo.before(checkout) || periodo.equals(checkout)));
-    }
-    public boolean isDateBetween(Date initial, Date finalDate) {
-        return (initial.after(checkin) || initial.equals(checkin)) 
-            && (finalDate.before(checkout) || finalDate.equals(checkout));
-    }
-    
+	public boolean isDateBetween(Date periodo, boolean entre) {
+	    if (entre) {
+	        return !periodo.before(checkin) && !periodo.after(checkout);
+	    }
+	    return periodo.before(checkin) || periodo.after(checkout);
+	}
+	public boolean isDateBetween(Date initial, Date finalDate) {
+	    return !initial.before(checkin) && finalDate.before(checkout);
+	}
+
 	public Reserva(Quarto quarto, Date checkin, Date checkout) {
 		super();
 		this.quarto = quarto;

@@ -1,6 +1,8 @@
 package classes;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class Hotel{
@@ -42,5 +44,30 @@ public class Hotel{
 			}
 		}
 		return cancelamentos;
+	}
+	public Map<Integer, Integer> getQuartosMaisReservados() {
+	    Map<Integer, Integer> reservasPorQuarto = new HashMap<>();
+	    for (Quarto quarto : this.getQuartos()) {
+	        int numeroQuarto = quarto.getNumero();
+	        List<Reserva> reservas = this.getReservasByQuarto(numeroQuarto);
+	        reservasPorQuarto.put(numeroQuarto, reservas.size());
+	    }
+	    return reservasPorQuarto;
+	}
+	public Map<Integer, Integer> getQuartosMenosReservados() {
+	    Map<Integer, Integer> reservasPorQuarto = getQuartosMaisReservados();
+	    int menorNumeroReservas = Integer.MAX_VALUE;
+    	for (int count : reservasPorQuarto.values()) {
+	        if (count < menorNumeroReservas) {
+	            menorNumeroReservas = count;
+	        }
+	    }
+	    Map<Integer, Integer> quartosMenosReservados = new HashMap<>();
+	    for (Map.Entry<Integer, Integer> entry : reservasPorQuarto.entrySet()) {
+	        if (entry.getValue() == menorNumeroReservas) {
+	            quartosMenosReservados.put(entry.getKey(), entry.getValue());
+	        }
+	    }
+	    return quartosMenosReservados;
 	}
 }
