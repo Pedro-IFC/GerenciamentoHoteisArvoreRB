@@ -17,7 +17,7 @@ public class Comander {
         calendar.set(2024, Calendar.NOVEMBER, 21, 23, 59, 59);
         calendar.set(Calendar.MILLISECOND, 999);
         Date finalDate = calendar.getTime();
-		System.out.println("Taxa de ocupação: " + hotelF.getTaxaOCupacao(new Date(),finalDate) + "%");
+		System.out.println("Taxa de ocupação: " + hotelF.getTaxaOCupacao(new Date(), finalDate) + "%");
 	}
 	public static int  index() {
 		System.out.println(
@@ -229,8 +229,14 @@ public class Comander {
 	            System.out.print("Digite a data de check-out (dd/MM/yyyy): ");
 	            String dataEntrada2 = scanner.nextLine(); 
 	        	Date dataFormatada2 = formatoData.parse(dataEntrada2);
-	        	if(hotelF.verificarDisponibilidadeQuarto(hotelF.getQuartos().get(idQuarto).getNumero(), dataFormatada1, dataFormatada2)) {
-		    		if(hotelF.inserirReserva(c, hotelF.getQuartos().get(idQuarto), dataFormatada1, dataFormatada2)) {
+	            Calendar calendar = Calendar.getInstance();
+	            calendar.setTime(dataFormatada2);
+	            calendar.set(Calendar.HOUR_OF_DAY, 23);
+	            calendar.set(Calendar.MINUTE, 59);
+	            calendar.set(Calendar.SECOND, 59);
+	            Date dataFinal2 = calendar.getTime();
+	        	if(hotelF.verificarDisponibilidadeQuarto(hotelF.getQuartos().get(idQuarto).getNumero(), dataFormatada1, dataFinal2)) {
+		    		if(hotelF.inserirReserva(c, hotelF.getQuartos().get(idQuarto), dataFormatada1, dataFinal2)) {
 		    			System.out.println("Reserva cadastrada com sucesso!");
 		    		}else {
 		    			System.out.println("Reserva não pode ser efetuada! Procure por outro periodo");
@@ -362,7 +368,7 @@ public class Comander {
 	}
 	public static int gerirCancelamentos() {
 		System.out.println(
-				"Você selecionou gerir Reservas!\n"
+				"Você selecionou gerir Cancelamentos!\n"
 				+ "Você gostaria de:\n"
 				+ "[1] Listagem de Cancelamentos por Check-in \n"
 				+ "[2] Listagem de Cancelamentos por Cliente:\n"
@@ -379,12 +385,13 @@ public class Comander {
 		);	
 		for(int i = 0; i<hotelF.getClientes().size();i++) {
 			for(int j = 0; j<hotelF.getClientes().get(i).getCancelamentos().size();j++) {
+				System.out.println("Teste2");
 				System.out.println(
 					hotelF.getClientes().get(i).getNome() + " | " +
-					hotelF.getClientes().get(i).getReservas().listar().get(j).getQuarto().getNumero() + " | " +
-					hotelF.getClientes().get(i).getReservas().listar().get(j).getQuarto().getCategoria() + " | " +
-					hotelF.getClientes().get(i).getReservas().listar().get(j).getCheckin() + " | " +
-					hotelF.getClientes().get(i).getReservas().listar().get(j).getCheckout() + " | " 
+					hotelF.getClientes().get(i).getCancelamentos().listar().get(j).getQuarto().getNumero() + " | " +
+					hotelF.getClientes().get(i).getCancelamentos().listar().get(j).getQuarto().getCategoria() + " | " +
+					hotelF.getClientes().get(i).getCancelamentos().listar().get(j).getCheckin() + " | " +
+					hotelF.getClientes().get(i).getCancelamentos().listar().get(j).getCheckout() + " | " 
 				);
 			}
 		}
@@ -472,7 +479,13 @@ public class Comander {
             System.out.print("Digite a data final (dd/MM/yyyy): ");
             String dataEntrada2 = scanner.nextLine(); 
         	Date dataFormatada2 = formatoData.parse(dataEntrada2);
-        	System.out.println("A taxa de ocupação nesse período foi de: " + hotelF.getTaxaOCupacao(dataFormatada1, dataFormatada2) + "%");
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(dataFormatada2);
+            calendar.set(Calendar.HOUR_OF_DAY, 23);
+            calendar.set(Calendar.MINUTE, 59);
+            calendar.set(Calendar.SECOND, 59);
+            Date dataFinal2 = calendar.getTime();
+        	System.out.println("A taxa de ocupação nesse período foi de: " + hotelF.getTaxaOCupacao(dataFormatada1, dataFinal2) + "%");
         } catch (ParseException e) {
             System.out.println("Erro: data inválida! Certifique-se de usar o formato dd/MM/yyyy.");
         }
@@ -507,7 +520,13 @@ public class Comander {
             System.out.print("Digite a data final (dd/MM/yyyy): ");
             String dataEntrada2 = scanner.nextLine(); 
         	Date dataFormatada2 = formatoData.parse(dataEntrada2);
-        	System.out.println("A taxa de cancelamento nesse período foi de: " + hotelF.getTaxaCancelamento(dataFormatada1, dataFormatada2) + "%");
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(dataFormatada2);
+            calendar.set(Calendar.HOUR_OF_DAY, 23);
+            calendar.set(Calendar.MINUTE, 59);
+            calendar.set(Calendar.SECOND, 59);
+            Date dataFinal2 = calendar.getTime();
+        	System.out.println("A taxa de cancelamento nesse período foi de: " + hotelF.getTaxaCancelamento(dataFormatada1, dataFinal2) + "%");
         } catch (ParseException e) {
             System.out.println("Erro: data inválida! Certifique-se de usar o formato dd/MM/yyyy.");
         }
