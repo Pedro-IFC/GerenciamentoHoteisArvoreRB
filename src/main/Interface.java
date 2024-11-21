@@ -2,10 +2,15 @@ package main;
 
 public class Interface {
 	public static void init() {
+		Comander.printOccupancyRate();
 		int comando = Comander.index();
 		while(true) {
 			System.out.println("===========================================================");
+			Comander.printOccupancyRate();
 			switch(comando) {
+				case(-1):
+					comando = Comander.index();		
+				break;
 				case(0):
 					comando = Comander.index();		
 				break;
@@ -16,10 +21,10 @@ public class Interface {
 					comando = Comander.gerirReservas();
 				break;
 				case(3):
-					//gerirCancelamentos
+					comando = Comander.gerirCancelamentos();
 				break;
 				case(4):
-					//gerirClientes
+					comando = Comander.gerirRelatorios();
 				break;
 				case(5):
 					comando = Comander.cadastrarQuarto();
@@ -37,13 +42,25 @@ public class Interface {
 					comando = Comander.cadastrarReserva();
 				break;
 				case(10):
-					//Ler reserva por checkin
+					comando = Comander.verReservasPorCheckin();
 				break;
 				case(11):
-					//Ler reserva por cliente
+					comando = Comander.verReservasPorCliente();
 				break;
 				case(12):
-					//Cancelar reserva
+					comando = Comander.verTodasReservas();
+				break;
+				case(13):
+					comando = Comander.cancelarReserva();
+				break;
+				case(14):
+					comando = Comander.verCancelamentosPorCheckin();
+				break;
+				case(15):
+					comando = Comander.verCancelamentosPorCliente();
+				break;
+				case(16):
+					comando = Comander.verTodosCancelamentos();
 				break;
 				default:
 					System.out.println("Erro comando não esperado, tente novamente!");

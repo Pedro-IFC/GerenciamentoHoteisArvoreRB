@@ -1,5 +1,7 @@
 package classes;
 
+import java.util.List;
+
 public class Cliente extends Ficheiro{
 	private int CPF;
 	private String nome;
@@ -13,5 +15,8 @@ public class Cliente extends Ficheiro{
 	}
 	public int getCPF() {
 		return CPF;
+	}
+	public List<Reserva> getReservasByQuarto(int idQuarto) {
+	    return this.getReservas().getReservasByQuarto(idQuarto);
 	}
 }

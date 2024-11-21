@@ -5,6 +5,7 @@ import classes.Hotel;
 import classes.Quarto;
 import classes.Reserva;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -43,9 +44,27 @@ public class HotelFacade {
 			}
 		}
 		return ids;
+	}public boolean verificarDisponibilidadeQuarto(int idParam, Date checkin, Date checkout) {
+        List<Reserva> reservas = this.hotel.getReservasByQuarto(idParam);
+        for (Reserva reserva : reservas) {
+            if (checkin.before(reserva.getCheckout()) && checkout.after(reserva.getCheckin())) {
+                return false;
+            }
+        }
+        return true;
 	}
 	public boolean inserirReserva(Cliente cliente, Quarto quarto, Date checkin, Date checkout) {
-		return this.hotel.addReserva(new Reserva(quarto, checkin, checkout, cliente), cliente.getCPF());
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+	    String dataFormatada = sdf.format(checkin);
+	    String chaveString = dataFormatada + quarto.getNumero();
+	    int chaveInteira;
+	    try {
+	        chaveInteira = Integer.parseInt(chaveString);
+	    } catch (NumberFormatException e) {
+	        System.out.println("Erro ao converter para inteiro: " + e.getMessage());
+	        return false;
+	    }
+	    return this.getCliente(cliente.getCPF()).addReserva(new Reserva(quarto, checkin, checkout), chaveInteira);
 	}
 	public boolean hasCliente(int cpf) {
 		return this.hotel.getClientes().has(cpf);
@@ -55,5 +74,25 @@ public class HotelFacade {
 	}
 	public Cliente getCliente(int cpf) {
 		return this.hotel.getClientes().get(cpf);
+	}
+	public List<Cliente> getClientes() {
+		return this.hotel.getClientes().listar();
+	}
+	public Double getTaxaOCupacao(Date initial, Date finalDate) {
+        int totalQuartos = hotel.getQuartos().size();
+        if (totalQuartos == 0) {
+            return 0.0; 
+        }
+        int quartosOcupados = 0;
+        for (Quarto quarto : hotel.getQuartos()) {
+            List<Reserva> reservas = hotel.getReservasByQuarto(quarto.getNumero());
+        	System.out.println(reservas.size());
+            for (Reserva reserva : reservas) {
+                if (reserva.isDateBetween(initial, finalDate)) {
+                    quartosOcupados++;
+                }
+            }
+        }
+        return (double) quartosOcupados / totalQuartos * 100;
 	}
 }

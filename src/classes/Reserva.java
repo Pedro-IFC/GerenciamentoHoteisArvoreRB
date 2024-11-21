@@ -1,13 +1,11 @@
 package classes;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Reserva {
 	private Quarto quarto;
 	private Date checkin;
 	private Date checkout;
-	private Cliente cliente;
     public boolean isDateBetween(Date periodo, boolean entre) {
     	if(entre) {
             return (periodo.after(checkin) || periodo.equals(checkin)) 
@@ -16,13 +14,16 @@ public class Reserva {
         return !((periodo.after(checkin) || periodo.equals(checkin)) 
                 && (periodo.before(checkout) || periodo.equals(checkout)));
     }
+    public boolean isDateBetween(Date initial, Date finalDate) {
+        return (initial.after(checkin) || initial.equals(checkin)) 
+            && (finalDate.before(checkout) || finalDate.equals(checkout));
+    }
     
-	public Reserva(Quarto quarto, Date checkin, Date checkout, Cliente cliente) {
+	public Reserva(Quarto quarto, Date checkin, Date checkout) {
 		super();
 		this.quarto = quarto;
 		this.checkin = checkin;
 		this.checkout = checkout;
-		this.cliente = cliente;
 	}
 
 	public Quarto getQuarto() {
@@ -33,12 +34,6 @@ public class Reserva {
 	}
 	public Date getCheckout() {
 		return checkout;
-	}
-	public Cliente getCliente() {
-		return cliente;
-	}
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
 	}
 	public String toString() {
 		StringBuilder builder = new StringBuilder();

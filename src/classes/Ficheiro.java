@@ -1,5 +1,7 @@
 package classes;
 
+import java.text.SimpleDateFormat;
+
 public class Ficheiro {
 	private Reservas reservas;
 	private Cancelamentos cancelamentos;
@@ -19,5 +21,13 @@ public class Ficheiro {
 	}
 	public Cancelamentos getCancelamentos() {
 		return cancelamentos;
+	}
+	public boolean cancelarReserva(int id) {
+		Reserva reserva = this.getReservas().listar().get(id);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+	    String dataFormatada = sdf.format(reserva.getCheckin());
+	    String chaveString = dataFormatada + reserva.getQuarto().getNumero();
+        this.getReservas().excluir(Integer.parseInt(chaveString));
+		return this.getCancelamentos().inserir(new Cancelamento(reserva), Integer.parseInt(chaveString));
 	}
 }

@@ -1,5 +1,8 @@
 package tree;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ArvoreRubroNegro<T> {
     private Nodo<T> raiz = null;
     
@@ -278,5 +281,18 @@ public class ArvoreRubroNegro<T> {
     }
     public Nodo<T> getRaiz(){
     	return this.raiz;
+    }
+    public List<T> listar() {
+        List<T> nodos = new ArrayList<>();
+        percorrerEmOrdem(getRaiz(), nodos);
+        return nodos;
+    }
+    private void percorrerEmOrdem(Nodo<T> nodo, List<T> nodos) {
+        if (nodo == null) {
+            return;
+        }
+        percorrerEmOrdem(nodo.getEsquerdo(), nodos);
+        nodos.add(nodo.getDado());
+        percorrerEmOrdem(nodo.getDireito(), nodos);
     }
 }

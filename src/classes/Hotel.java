@@ -3,9 +3,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Hotel extends Ficheiro{
+public class Hotel{
 	private String name = "Overlook";
-	private Clientes clientes;
+	private Clientes clientes = new Clientes();
     private ArrayList<Quarto> quartos = new ArrayList<>();
 	public ArrayList<Quarto> getQuartos() {
 		return quartos;
@@ -26,6 +26,12 @@ public class Hotel extends Ficheiro{
 		return this.quartos.get(id);
 	}
 	public List<Reserva> getReservasByQuarto(int idQuarto) {
-		return this.getReservas().getReservasByQuarto(idQuarto);
+		List<Reserva> reservas = new ArrayList<Reserva>();
+		for (int i = 0; i < this.getClientes().listar().size(); i++) {
+			if(this.getClientes().listar().get(i)!=null) {
+			    reservas.addAll(this.getClientes().listar().get(i).getReservasByQuarto(idQuarto));
+			}
+		}
+		return reservas;
 	}
 }
