@@ -60,7 +60,16 @@ public class Interface {
 					comando = Comander.verCancelamentosPorCliente();
 				break;
 				case(16):
-					comando = Comander.verTodosCancelamentos();
+					comando = Comander.taxaOcupacaoPorPeriodo();
+				break;
+				case(17):
+					comando = Comander.quartosMaisReservados();
+				break;
+				case(18):
+					comando = Comander.quartosMenosReservados();
+				break;
+				case(19):
+					comando = Comander.taxaCancelamentoPorPeriodo();
 				break;
 				default:
 					System.out.println("Erro comando não esperado, tente novamente!");

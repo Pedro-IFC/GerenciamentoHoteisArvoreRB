@@ -34,4 +34,13 @@ public class Hotel{
 		}
 		return reservas;
 	}
+	public List<Cancelamento> getCancelamentosByQuarto(int idQuarto) {
+		List<Cancelamento> cancelamentos = new ArrayList<Cancelamento>();
+		for (int i = 0; i < this.getClientes().listar().size(); i++) {
+			if(this.getClientes().listar().get(i)!=null) {
+				cancelamentos.addAll(this.getClientes().listar().get(i).getCancelamentosByQuarto(idQuarto));
+			}
+		}
+		return cancelamentos;
+	}
 }

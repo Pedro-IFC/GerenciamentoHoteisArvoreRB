@@ -1,4 +1,5 @@
 package facade;
+import classes.Cancelamento;
 import classes.CategoriaDoQuarto;
 import classes.Cliente;
 import classes.Hotel;
@@ -86,6 +87,24 @@ public class HotelFacade {
         int quartosOcupados = 0;
         for (Quarto quarto : hotel.getQuartos()) {
             List<Reserva> reservas = hotel.getReservasByQuarto(quarto.getNumero());
+        	System.out.println(reservas.size());
+            for (Reserva reserva : reservas) {
+                if (reserva.isDateBetween(initial, finalDate)) {
+                    quartosOcupados++;
+                }
+            }
+        }
+        return (double) quartosOcupados / totalQuartos * 100;
+	}
+
+	public Double getTaxaCancelamento(Date initial, Date finalDate) {
+        int totalQuartos = hotel.getQuartos().size();
+        if (totalQuartos == 0) {
+            return 0.0; 
+        }
+        int quartosOcupados = 0;
+        for (Quarto quarto : hotel.getQuartos()) {
+            List<Cancelamento> reservas = hotel.getCancelamentosByQuarto(quarto.getNumero());
         	System.out.println(reservas.size());
             for (Reserva reserva : reservas) {
                 if (reserva.isDateBetween(initial, finalDate)) {

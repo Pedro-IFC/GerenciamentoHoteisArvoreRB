@@ -19,4 +19,7 @@ public class Cliente extends Ficheiro{
 	public List<Reserva> getReservasByQuarto(int idQuarto) {
 	    return this.getReservas().getReservasByQuarto(idQuarto);
 	}
+	public List<Cancelamento> getCancelamentosByQuarto(int idQuarto) {
+	    return this.getCancelamentos().getByQuarto(idQuarto);
+	}
 }

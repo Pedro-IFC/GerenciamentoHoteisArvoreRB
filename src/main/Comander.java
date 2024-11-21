@@ -382,7 +382,7 @@ public class Comander {
 				);
 			}
 		}
-		return 2;
+		return 3;
 	}
 	public static int verCancelamentosPorCliente() {
 		int cpf =0;
@@ -411,7 +411,7 @@ public class Comander {
 				hotelF.getCliente(cpf).getCancelamentos().listar().get(j).getCheckout() + " | " 
 			);
 		}
-		return 2;
+		return 3;
 	}
 	public static int verCancelamentosPorCheckin() {
 		SimpleDateFormat formatoData = new SimpleDateFormat("dd/MM/yyyy");
@@ -439,7 +439,7 @@ public class Comander {
         } catch (ParseException e) {
 			e.printStackTrace();
 		}
-		return 2;
+		return 3;
 	}
 	public static int gerirRelatorios() {
 		System.out.println(
@@ -454,5 +454,45 @@ public class Comander {
 			);
 		int input = scanner.nextInt();
 		return input<=0? 0 : input+15;
+	}
+	public static int taxaOcupacaoPorPeriodo() {
+		System.out.println("Você escolheu ocupação por período");
+		SimpleDateFormat formatoData = new SimpleDateFormat("dd/MM/yyyy");
+        System.out.print("Digite a data inicial (dd/MM/yyyy): ");
+        scanner.nextLine();
+        String dataEntrada = scanner.nextLine(); 
+        try {
+        	Date dataFormatada1 = formatoData.parse(dataEntrada);
+            System.out.print("Digite a data final (dd/MM/yyyy): ");
+            String dataEntrada2 = scanner.nextLine(); 
+        	Date dataFormatada2 = formatoData.parse(dataEntrada2);
+        	System.out.println("A taxa de ocupação nesse período foi de: " + hotelF.getTaxaOCupacao(dataFormatada1, dataFormatada2) + "%");
+        } catch (ParseException e) {
+            System.out.println("Erro: data inválida! Certifique-se de usar o formato dd/MM/yyyy.");
+        }
+		return 4;
+	}
+	public static int quartosMaisReservados() {
+		return 4;
+	}
+	public static int quartosMenosReservados() {
+		return 4;
+	}
+	public static int taxaCancelamentoPorPeriodo() {
+		System.out.println("Você escolheu ocupação por período");
+		SimpleDateFormat formatoData = new SimpleDateFormat("dd/MM/yyyy");
+        System.out.print("Digite a data inicial (dd/MM/yyyy): ");
+        scanner.nextLine();
+        String dataEntrada = scanner.nextLine(); 
+        try {
+        	Date dataFormatada1 = formatoData.parse(dataEntrada);
+            System.out.print("Digite a data final (dd/MM/yyyy): ");
+            String dataEntrada2 = scanner.nextLine(); 
+        	Date dataFormatada2 = formatoData.parse(dataEntrada2);
+        	System.out.println("A taxa de cancelamento nesse período foi de: " + hotelF.getTaxaCancelamento(dataFormatada1, dataFormatada2) + "%");
+        } catch (ParseException e) {
+            System.out.println("Erro: data inválida! Certifique-se de usar o formato dd/MM/yyyy.");
+        }
+		return 4;
 	}
 }
