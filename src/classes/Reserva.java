@@ -13,9 +13,8 @@ public class Reserva {
 	    return periodo.before(checkin) || periodo.after(checkout);
 	}
 	public boolean isDateBetween(Date initial, Date finalDate) {
-	    return !finalDate.before(checkin) && !initial.after(checkout);
+	    return  !checkin.before(initial) && !checkout.after(finalDate);
 	}
-
 	public Reserva(Quarto quarto, Date checkin, Date checkout) {
 		super();
 		this.quarto = quarto;

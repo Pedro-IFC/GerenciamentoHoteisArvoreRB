@@ -80,7 +80,7 @@ public class HotelFacade {
 	public List<Cliente> getClientes() {
 		return this.hotel.getClientes().listar();
 	}
-	public Double getTaxaOCupacao(Date initial, Date finalDate) {
+	public Double getTaxaOCupacao(Date initial) {
         int totalQuartos = hotel.getQuartos().size();
         if (totalQuartos == 0) {
             return 0.0; 
@@ -89,29 +89,74 @@ public class HotelFacade {
         for (Quarto quarto : hotel.getQuartos()) {
             List<Reserva> reservas = hotel.getReservasByQuarto(quarto.getNumero());
             for (Reserva reserva : reservas) {
-                if (reserva.isDateBetween(initial, finalDate)) {
+                if (reserva.isDateBetween(initial, true)) {
                     quartosOcupados++;
                 }
             }
         }
         return (double) quartosOcupados / totalQuartos * 100;
 	}
+	public Double getTaxaOCupacao(Date initial, Date finalDate) {
+		int totalQuartos = hotel.getQuartos().size();
+	    if (totalQuartos == 0) {
+	        return 0.0;
+	    }
+
+	    long totalDiasPeriodo = (finalDate.getTime() - initial.getTime()) / (1000 * 60 * 60 * 24) + 1; // Dias no período
+	    if (totalDiasPeriodo <= 0) {
+	        return 0.0;
+	    }
+
+	    double somaOcupacaoPorDias = 0.0;
+
+	    for (Quarto quarto : hotel.getQuartos()) {
+	        List<Reserva> reservas = hotel.getReservasByQuarto(quarto.getNumero());
+	        long diasOcupados = 0;
+
+	        for (Reserva reserva : reservas) {
+	            if (reserva.isDateBetween(initial, finalDate)) {
+	                Date inicioReserva = reserva.getCheckin().after(initial) ? reserva.getCheckin() : initial;
+	                Date fimReserva = reserva.getCheckout().before(finalDate) ? reserva.getCheckout() : finalDate;
+
+	                diasOcupados += (fimReserva.getTime() - inicioReserva.getTime()) / (1000 * 60 * 60 * 24) + 1;
+	            }
+	        }
+
+	        somaOcupacaoPorDias += (double) diasOcupados / totalDiasPeriodo;
+	    }
+
+	    return (somaOcupacaoPorDias / totalQuartos) * 100;
+	}
 	public Double getTaxaCancelamento(Date initial, Date finalDate) {
-        int totalQuartos = hotel.getQuartos().size();
-        if (totalQuartos == 0) {
-            return 0.0; 
-        }
-        int quartosOcupados = 0;
-        for (Quarto quarto : hotel.getQuartos()) {
-            List<Cancelamento> reservas = hotel.getCancelamentosByQuarto(quarto.getNumero());
-        	System.out.println(reservas.size());
-            for (Reserva reserva : reservas) {
-                if (reserva.isDateBetween(initial, finalDate)) {
-                    quartosOcupados++;
-                }
-            }
-        }
-        return (double) quartosOcupados / totalQuartos * 100;
+	    int totalQuartos = hotel.getQuartos().size();
+	    if (totalQuartos == 0) {
+	        return 0.0;
+	    }
+
+	    long totalDiasPeriodo = (finalDate.getTime() - initial.getTime()) / (1000 * 60 * 60 * 24) + 1; // Dias no período
+	    if (totalDiasPeriodo <= 0) {
+	        return 0.0; 
+	    }
+
+	    double somaOcupacaoPorDias = 0.0;
+
+	    for (Quarto quarto : hotel.getQuartos()) {
+	        List<Cancelamento> reservas = hotel.getCancelamentosByQuarto(quarto.getNumero());
+	        long diasOcupados = 0;
+
+	        for (Cancelamento reserva : reservas) {
+	            if (reserva.isDateBetween(initial, finalDate)) {
+	                Date inicioReserva = reserva.getCheckin().after(initial) ? reserva.getCheckin() : initial;
+	                Date fimReserva = reserva.getCheckout().before(finalDate) ? reserva.getCheckout() : finalDate;
+
+	                diasOcupados += (fimReserva.getTime() - inicioReserva.getTime()) / (1000 * 60 * 60 * 24) + 1;
+	            }
+	        }
+
+	        somaOcupacaoPorDias += (double) diasOcupados / totalDiasPeriodo;
+	    }
+
+	    return (somaOcupacaoPorDias / totalQuartos) * 100;
 	}
 	public Map<Integer, Integer> getQuartosMaisReservados() {
 		return hotel.getQuartosMaisReservados();

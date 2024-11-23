@@ -17,7 +17,7 @@ public class Comander {
         calendar.set(2024, Calendar.NOVEMBER, 21, 23, 59, 59);
         calendar.set(Calendar.MILLISECOND, 999);
         Date finalDate = calendar.getTime();
-		System.out.println("Taxa de ocupação: " + hotelF.getTaxaOCupacao(new Date(), finalDate) + "%");
+		System.out.println("Taxa de ocupação: " + hotelF.getTaxaOCupacao(new Date()) + "%");
 	}
 	public static int  index() {
 		System.out.println(
@@ -122,7 +122,7 @@ public class Comander {
 				);
 				idQuarto = scanner.nextInt();
 			}while(idQuarto<0 || idQuarto>i);
-			hotelF.removeQuarto(i);
+			hotelF.removeQuarto(idQuarto);
 			System.out.println("Quarto excluído com sucesso");
 		}
 		return 1;
@@ -510,7 +510,7 @@ public class Comander {
 		return 4;
 	}
 	public static int taxaCancelamentoPorPeriodo() {
-		System.out.println("Você escolheu ocupação por período");
+		System.out.println("Você escolheu cancelamento por período");
 		SimpleDateFormat formatoData = new SimpleDateFormat("dd/MM/yyyy");
         System.out.print("Digite a data inicial (dd/MM/yyyy): ");
         scanner.nextLine();
